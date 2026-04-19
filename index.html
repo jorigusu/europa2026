@@ -1,22 +1,104 @@
-- DOCTYPE html, charset UTF-8, viewport meta, title "Europa Mayo 2026"
-- Link al manifest.json
-- Script que registra el service worker sw.js
-- Todo el CSS inline en un bloque <style>
-- Todo el JS inline en un bloque <script> al final del body
-- El array DIAS con los 20 dias del itinerario que te pego abajo
-- Las siguientes funciones: render(), toggleOpen(), toggleDone(), setFilter(), openMaps(), openClaude()
-- La funcion openClaude(dia) debe abrir: https://claude.ai/new?q=Estoy+en+[ciudad]+el+[fecha].+[actividades].+Necesito+ayuda+con+mi+dia.
-- Filtros: Todos / Pendientes / Completados / Hotel sin confirmar
-- Barra de progreso
-- Cada tarjeta: expandible, muestra hotel, banner de transporte, actividades con hora y descripcion, boton Google Maps, boton Preguntar a Claude
-- Doble clic en cualquier campo de texto lo hace editable, los cambios se guardan en localStorage
-- Boton resetear dia que restaura el contenido original
-- Estado de dias completados guardado en localStorage bajo la clave itineu26
-- Diseno responsivo, colores: verde #1D9E75, fondo blanco, texto oscuro
-- Sin dependencias externas, todo debe funcionar offline
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Europa Mayo 2026</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #222; min-height: 100vh; }
+    header { background: #1D9E75; color: #fff; padding: 16px 20px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+    header h1 { font-size: 1.2rem; font-weight: 700; }
+    header p { font-size: .8rem; opacity: .85; margin-top: 2px; }
+    .progress-wrap { margin-top: 10px; }
+    .progress-label { font-size: .75rem; opacity: .85; margin-bottom: 4px; }
+    .progress-bar { background: rgba(255,255,255,.3); border-radius: 20px; height: 8px; overflow: hidden; }
+    .progress-fill { background: #fff; height: 100%; border-radius: 20px; transition: width .4s ease; }
+    .filters { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; background: #fff; border-bottom: 1px solid #e0e0e0; }
+    .filters::-webkit-scrollbar { display: none; }
+    .filter-btn { border: 1.5px solid #1D9E75; background: #fff; color: #1D9E75; padding: 5px 14px; border-radius: 20px; font-size: .82rem; cursor: pointer; white-space: nowrap; transition: all .2s; }
+    .filter-btn.active { background: #1D9E75; color: #fff; }
+    .filter-btn:hover:not(.active) { background: #e8f8f2; }
+    .main { max-width: 680px; margin: 0 auto; padding: 12px 12px 40px; }
+    .card { background: #fff; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.1); overflow: hidden; border-left: 4px solid #1D9E75; transition: box-shadow .2s; }
+    .card.done { border-left-color: #aaa; opacity: .7; }
+    .card.hotel-warn { border-left-color: #e67e22; }
+    .card-head { display: flex; align-items: center; gap: 10px; padding: 14px 14px 14px 12px; cursor: pointer; user-select: none; }
+    .card-head:hover { background: #fafafa; }
+    .check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #1D9E75; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all .2s; background: #fff; }
+    .check.done { background: #aaa; border-color: #aaa; }
+    .check svg { display: none; }
+    .check.done svg { display: block; }
+    .card-title-area { flex: 1; min-width: 0; }
+    .card-day { font-size: .72rem; color: #1D9E75; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .card.done .card-day { color: #aaa; }
+    .card-city { font-size: 1rem; font-weight: 700; line-height: 1.2; }
+    .card-fecha { font-size: .78rem; color: #666; }
+    .card-hotel-badge { font-size: .7rem; background: #fff3e0; color: #c0392b; border-radius: 4px; padding: 1px 6px; margin-left: 4px; }
+    .chevron { color: #999; font-size: 1rem; transition: transform .3s; flex-shrink: 0; }
+    .card.open .chevron { transform: rotate(180deg); }
+    .card-body { display: none; border-top: 1px solid #f0f0f0; }
+    .card.open .card-body { display: block; }
+    .transp-banner { background: #e8f8f2; color: #155f45; font-size: .8rem; padding: 8px 14px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
+    .transp-banner svg { flex-shrink: 0; margin-top: 1px; }
+    .hotel-row { display: flex; align-items: center; gap: 6px; padding: 8px 14px; font-size: .82rem; color: #444; border-bottom: 1px solid #f0f0f0; }
+    .hotel-icon { font-size: 1rem; }
+    .hotel-name { font-weight: 600; }
+    .hotel-unconfirmed { color: #c0392b; font-size: .7rem; font-weight: 600; margin-left: 4px; }
+    .acts { padding: 8px 14px 4px; }
+    .act { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid #f5f5f5; }
+    .act:last-child { border-bottom: none; }
+    .act-time { font-size: .72rem; color: #1D9E75; font-weight: 700; min-width: 60px; padding-top: 1px; flex-shrink: 0; }
+    .act-content { flex: 1; min-width: 0; }
+    .act-title { font-size: .88rem; font-weight: 600; line-height: 1.3; }
+    .act-desc { font-size: .78rem; color: #666; line-height: 1.4; margin-top: 2px; }
+    .act-title[contenteditable="true"], .act-desc[contenteditable="true"] { outline: 2px solid #1D9E75; border-radius: 3px; padding: 1px 4px; background: #f0fdf8; }
+    .card-actions { display: flex; gap: 8px; padding: 10px 14px 14px; }
+    .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; padding: 8px; border-radius: 8px; border: none; font-size: .78rem; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-maps { background: #e8f8f2; color: #1D9E75; }
+    .btn-maps:hover { background: #1D9E75; color: #fff; }
+    .btn-claude { background: #f0edff; color: #5b4fcf; }
+    .btn-claude:hover { background: #5b4fcf; color: #fff; }
+    .btn-reset { background: #fff3e0; color: #c0392b; }
+    .btn-reset:hover { background: #c0392b; color: #fff; }
+    .tag { display: inline-block; font-size: .64rem; border-radius: 4px; padding: 1px 5px; margin-left: 4px; font-weight: 600; vertical-align: middle; }
+    .tag-traslado { background: #e3f0ff; color: #1a5fa8; }
+    .tag-cultura { background: #fdf3e7; color: #a05c00; }
+    .tag-gastronomia { background: #fff0f0; color: #c0392b; }
+    .tag-naturaleza { background: #e8f8f2; color: #1D9E75; }
+    .tag-paseo { background: #f5f0ff; color: #6b3fa0; }
+    .tag-musica { background: #fff8e0; color: #9a7000; }
+    .tag-alojamiento { background: #e0f4ff; color: #0a6fa8; }
+    .tag-llegada { background: #f0f0f0; color: #555; }
+    .tag-preparacion { background: #f5f0ff; color: #6b3fa0; }
+    .empty { text-align: center; color: #aaa; padding: 60px 20px; font-size: .9rem; }
+    @media (max-width: 400px) {
+      .card-actions { flex-wrap: wrap; }
+      .btn { min-width: calc(50% - 4px); flex: none; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1>✈ Europa Mayo 2026</h1>
+  <p>Itinerario 1–20 mayo · 10 ciudades · 5 países</p>
+  <div class="progress-wrap">
+    <div class="progress-label" id="prog-label">0 de 20 días completados</div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+</header>
 
-El array DIAS es este (20 objetos):
+<div class="filters">
+  <button class="filter-btn active" onclick="setFilter('todos')">Todos</button>
+  <button class="filter-btn" onclick="setFilter('pendientes')">Pendientes</button>
+  <button class="filter-btn" onclick="setFilter('completados')">Completados</button>
+  <button class="filter-btn" onclick="setFilter('hotel')">Hotel sin confirmar</button>
+</div>
 
+<div class="main" id="main"></div>
+
+<script>
 const DIAS = [
   { dia:1, fecha:"Vie 1 mayo", pais:"DO", ciudad:"Santo Domingo", hotel:null, hotelOk:true, transp:null, mapQ:"Aeropuerto+Las+Americas+Santo+Domingo", acts:[ { t:"Todo el dia", titulo:"Dia de preparacion", desc:"Empacar, confirmar reservas, descargar mapas offline de Google Maps para Alemania y Austria. Comprar vignette Austria en asfinag.at", tag:"preparacion" }, { t:"6:00 pm", titulo:"Salir al aeropuerto", desc:"Llegar 3 h antes. Check-in Iberia, facturar equipaje directo a Berlin BER", tag:"traslado" }, { t:"8:55 pm", titulo:"Vuelo SDQ a Madrid", desc:"Iberia · ~8 h de vuelo nocturno · intentar dormir en el avion", tag:"traslado" } ] },
   { dia:2, fecha:"Sab 2 mayo", pais:"DE", ciudad:"Berlin", hotel:"AMANO Grand Central", hotelOk:true, transp:"Vuelo SDQ a Madrid a Berlin (Iberia) · Escala 5 h en Madrid T4 · Llegan BER ~7:00 pm · S-Bahn S9 al Hauptbahnhof ~30 min · 4 EUR/persona", mapQ:"AMANO+Grand+Central+Hotel+Berlin", acts:[ { t:"11:00 am", titulo:"Llegan Madrid T4", desc:"Escala de 5 h · desayunar, descansar, ducharse si es posible en la sala VIP Velazquez de Iberia (~40 EUR/persona)", tag:"traslado" }, { t:"3:55 pm", titulo:"Vuelo Madrid a Berlin", desc:"Iberia · ~3 h de vuelo", tag:"traslado" }, { t:"7:00 pm", titulo:"Llegan BER Berlin", desc:"Migracion + equipaje ~45 min · S-Bahn S9 al Hauptbahnhof ~30 min · 4 EUR/persona", tag:"traslado" }, { t:"9:00 pm", titulo:"Check-in AMANO Grand Central", desc:"Dejar equipaje · pedir habitacion alejada del rooftop bar", tag:"alojamiento" }, { t:"9:30 pm", titulo:"Cena ligera cerca del hotel", desc:"Augustiner am Gendarmenmarkt (10 min) o restaurante del propio hotel · nada de turismo esta noche", tag:"gastronomia" } ] },
@@ -40,17 +122,167 @@ const DIAS = [
   { dia:20, fecha:"Mie 20 mayo", pais:"DO", ciudad:"Berlin a Santo Domingo", hotel:null, hotelOk:true, transp:"S-Bahn S9 desde Hauptbahnhof al aeropuerto BER · ~30 min · 4 EUR/persona · Vuelo Berlin a Madrid a SDQ via Iberia", mapQ:"BER+Berlin+Brandenburg+Airport", acts:[ { t:"Manana", titulo:"Ultimo desayuno en Berlin", desc:"Desayuno tranquilo en el hotel · repasar el equipaje · asegurarse de no dejar nada", tag:"gastronomia" }, { t:"~11:00 am", titulo:"Salida al aeropuerto BER", desc:"S-Bahn S9 desde Hauptbahnhof · ~30 min · 4 EUR/persona · llegar 3 h antes del vuelo", tag:"traslado" }, { t:"~12:00 pm", titulo:"Check-in en BER", desc:"Documentar todo · revisar que no queda combustible pendiente con SIXT (ya devuelto el dia 17)", tag:"traslado" }, { t:"Tarde", titulo:"Vuelo Berlin a Madrid a Santo Domingo", desc:"Regreso con Iberia · equipaje facturado directo a SDQ · 18 noches y 10 ciudades en la memoria", tag:"traslado" } ] }
 ];
 
-=== ARCHIVO 2: europa2026/manifest.json ===
+const STORAGE_KEY = 'itineu26';
+const EDITS_KEY = 'itineu26_edits';
+let state = { done: {}, open: {} };
+let edits = {};
+let currentFilter = 'todos';
 
-{
-  "name": "Europa Mayo 2026",
-  "short_name": "Europa 2026",
-  "description": "Itinerario de viaje Europa 1-20 mayo 2026",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1D9E75",
-  "icons": [
-    { "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%231D9E75'/><text y='.9em' font-size='80' x='10'>✈</text></svg>", "sizes": "any", "type": "image/svg+xml" }
-  ]
+function loadState() {
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || { done: {}, open: {} }; } catch(e) { state = { done: {}, open: {} }; }
+  try { edits = JSON.parse(localStorage.getItem(EDITS_KEY)) || {}; } catch(e) { edits = {}; }
 }
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function saveEdits() { localStorage.setItem(EDITS_KEY, JSON.stringify(edits)); }
+
+function toggleOpen(id) {
+  state.open[id] = !state.open[id];
+  saveState();
+  render();
+}
+function toggleDone(id) {
+  state.done[id] = !state.done[id];
+  saveState();
+  render();
+}
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  render();
+}
+function openMaps(q) {
+  window.open('https://www.google.com/maps/search/?api=1&query=' + q, '_blank');
+}
+function openClaude(d) {
+  const acts = d.acts.map(a => a.titulo).join(', ');
+  const q = encodeURIComponent('Estoy en ' + d.ciudad + ' el ' + d.fecha + '. ' + acts + '. Necesito ayuda con mi dia.');
+  window.open('https://claude.ai/new?q=' + q, '_blank');
+}
+function resetDia(id) {
+  if (!confirm('¿Restaurar el día ' + id + ' al contenido original?')) return;
+  const prefix = id + '_';
+  Object.keys(edits).forEach(k => { if (k.startsWith(prefix)) delete edits[k]; });
+  saveEdits();
+  render();
+}
+
+function getDiasFiltered() {
+  return DIAS.filter(d => {
+    if (currentFilter === 'pendientes') return !state.done[d.dia];
+    if (currentFilter === 'completados') return !!state.done[d.dia];
+    if (currentFilter === 'hotel') return !d.hotelOk;
+    return true;
+  });
+}
+
+function flagEmoji(pais) {
+  const map = { DO: '🇩🇴', DE: '🇩🇪', AT: '🇦🇹' };
+  return map[pais] || '';
+}
+
+function render() {
+  const dias = getDiasFiltered();
+  const doneCount = DIAS.filter(d => state.done[d.dia]).length;
+  document.getElementById('prog-label').textContent = doneCount + ' de 20 días completados';
+  document.getElementById('prog-fill').style.width = (doneCount / 20 * 100) + '%';
+
+  const main = document.getElementById('main');
+  if (!dias.length) {
+    main.innerHTML = '<div class="empty">No hay días en esta categoría</div>';
+    return;
+  }
+
+  main.innerHTML = dias.map(d => {
+    const isDone = !!state.done[d.dia];
+    const isOpen = !!state.open[d.dia];
+    const isWarn = !d.hotelOk;
+    let cls = 'card';
+    if (isDone) cls += ' done';
+    if (isWarn) cls += ' hotel-warn';
+    if (isOpen) cls += ' open';
+
+    const hotelHtml = d.hotel ? `
+      <div class="hotel-row">
+        <span class="hotel-icon">🏨</span>
+        <span class="hotel-name">${d.hotel}</span>
+        ${!d.hotelOk ? '<span class="hotel-unconfirmed">SIN CONFIRMAR</span>' : ''}
+      </div>` : '';
+
+    const transpHtml = d.transp ? `
+      <div class="transp-banner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="21" r="1"/><circle cx="20" cy="21" r="1"/></svg>
+        ${d.transp}
+      </div>` : '';
+
+    const actsHtml = d.acts.map((a, i) => {
+      const titleKey = d.dia + '_' + i + '_titulo';
+      const descKey = d.dia + '_' + i + '_desc';
+      const titulo = edits[titleKey] !== undefined ? edits[titleKey] : a.titulo;
+      const desc = edits[descKey] !== undefined ? edits[descKey] : a.desc;
+      return `<div class="act">
+        <div class="act-time">${a.t}</div>
+        <div class="act-content">
+          <div class="act-title" ondblclick="makeEditable(this,'${titleKey}')">${titulo}<span class="tag tag-${a.tag}">${a.tag}</span></div>
+          <div class="act-desc" ondblclick="makeEditable(this,'${descKey}')">${desc}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="${cls}" id="card-${d.dia}">
+      <div class="card-head" onclick="toggleOpen(${d.dia})">
+        <div class="check ${isDone ? 'done' : ''}" onclick="event.stopPropagation();toggleDone(${d.dia})">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="card-title-area">
+          <div class="card-day">Día ${d.dia} · ${flagEmoji(d.pais)} ${d.pais}${isWarn ? '<span class="hotel-badge"> ⚠ hotel</span>' : ''}</div>
+          <div class="card-city">${d.ciudad}</div>
+          <div class="card-fecha">${d.fecha}</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-body">
+        ${transpHtml}
+        ${hotelHtml}
+        <div class="acts">${actsHtml}</div>
+        <div class="card-actions">
+          <button class="btn btn-maps" onclick="openMaps('${d.mapQ}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Maps
+          </button>
+          <button class="btn btn-claude" onclick="openClaude(DIAS[${d.dia - 1}])">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            Preguntar a Claude
+          </button>
+          <button class="btn btn-reset" onclick="resetDia(${d.dia})">↺</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function makeEditable(el, key) {
+  el.contentEditable = true;
+  el.focus();
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  el.onblur = () => {
+    el.contentEditable = false;
+    edits[key] = el.innerText.trim();
+    saveEdits();
+  };
+  el.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } };
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js');
+}
+
+loadState();
+render();
+</script>
+</body>
+</html>
