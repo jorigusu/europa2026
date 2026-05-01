@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Europa Mayo 2026 — Itinerario Completo</title>
+  <style>
+    @page { size: A4; margin: 18mm 15mm 18mm 15mm; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10pt; color: #1a1a1a; background: #fff; }
+
+    /* ── PORTADA ── */
+    .cover { text-align: center; padding: 60px 20px 50px; border-bottom: 3px solid #1D9E75; margin-bottom: 24px; }
+    .cover h1 { font-size: 28pt; color: #1D9E75; font-weight: 800; letter-spacing: -.5px; }
+    .cover .sub { font-size: 12pt; color: #555; margin-top: 6px; }
+    .cover .meta { margin-top: 20px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+    .cover .meta-item { text-align: center; }
+    .cover .meta-item .num { font-size: 22pt; font-weight: 800; color: #1D9E75; }
+    .cover .meta-item .lbl { font-size: 8pt; color: #777; text-transform: uppercase; letter-spacing: .05em; }
+
+    /* ── RESUMEN DE HOTELES ── */
+    .hotels-section { margin-bottom: 24px; page-break-inside: avoid; }
+    .section-title { font-size: 10pt; font-weight: 700; color: #fff; background: #1D9E75; padding: 5px 10px; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
+    .hotels-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+    .hotels-table th { background: #f0fdf8; color: #1D9E75; font-weight: 700; padding: 5px 8px; border: 1px solid #cce8de; text-align: left; }
+    .hotels-table td { padding: 5px 8px; border: 1px solid #e0e0e0; vertical-align: top; }
+    .hotels-table tr:nth-child(even) td { background: #fafafa; }
+
+    /* ── DÍA ── */
+    .day { page-break-inside: avoid; margin-bottom: 18px; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; }
+    .day-head { background: #1D9E75; color: #fff; padding: 7px 12px; display: flex; align-items: baseline; gap: 10px; }
+    .day-num { font-size: 9pt; font-weight: 700; opacity: .85; text-transform: uppercase; letter-spacing: .05em; min-width: 55px; }
+    .day-city { font-size: 12pt; font-weight: 800; flex: 1; }
+    .day-fecha { font-size: 9pt; opacity: .85; }
+    .day-body { padding: 0; }
+
+    /* TRANSPORTE */
+    .transp { background: #e8f8f2; color: #155f45; font-size: 8.5pt; padding: 6px 12px; border-bottom: 1px solid #cce8de; line-height: 1.4; }
+
+    /* HOTEL */
+    .hotel { font-size: 9pt; padding: 5px 12px; border-bottom: 1px solid #eee; color: #444; }
+    .hotel strong { color: #1D9E75; }
+
+    /* ACTIVIDADES */
+    .acts { padding: 6px 12px 8px; }
+    .act { display: flex; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f3f3f3; }
+    .act:last-child { border-bottom: none; }
+    .act-time { font-size: 8pt; color: #1D9E75; font-weight: 700; min-width: 58px; flex-shrink: 0; padding-top: 1px; }
+    .act-content { flex: 1; }
+    .act-title { font-size: 9.5pt; font-weight: 700; line-height: 1.3; }
+    .act-desc { font-size: 8.5pt; color: #555; line-height: 1.4; margin-top: 1px; }
+    .tag { display: inline-block; font-size: 6.5pt; border-radius: 3px; padding: 1px 4px; margin-left: 4px; font-weight: 700; vertical-align: middle; }
+    .tag-traslado    { background: #e3f0ff; color: #1a5fa8; }
+    .tag-cultura     { background: #fdf3e7; color: #a05c00; }
+    .tag-gastronomia { background: #fff0f0; color: #c0392b; }
+    .tag-naturaleza  { background: #e8f8f2; color: #1D9E75; }
+    .tag-paseo       { background: #f5f0ff; color: #6b3fa0; }
+    .tag-musica      { background: #fff8e0; color: #9a7000; }
+    .tag-alojamiento { background: #e0f4ff; color: #0a6fa8; }
+    .tag-llegada     { background: #f0f0f0; color: #555; }
+    .tag-preparacion { background: #f5f0ff; color: #6b3fa0; }
+
+    /* ── IMPRIMIR ── */
+    @media print {
+      body { font-size: 9.5pt; }
+      .day { page-break-inside: avoid; }
+      .no-print { display: none; }
+      a { text-decoration: none; color: inherit; }
+    }
+
+    /* ── BOTÓN IMPRIMIR (solo pantalla) ── */
+    @media screen {
+      body { max-width: 780px; margin: 0 auto; padding: 20px; background: #f0f0f0; }
+      .page { background: #fff; padding: 20px 24px; box-shadow: 0 2px 12px rgba(0,0,0,.15); }
+    }
+    .print-btn { display: block; text-align: center; margin: 0 0 20px; }
+    .print-btn button { background: #1D9E75; color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .print-btn button:hover { background: #17815f; }
+  </style>
+</head>
+<body>
+
+<div class="print-btn no-print">
+  <button onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- PORTADA -->
+  <div class="cover">
+    <h1>✈ Europa Mayo 2026</h1>
+    <div class="sub">Itinerario completo · Jorge &amp; familia</div>
+    <div class="meta">
+      <div class="meta-item"><div class="num">20</div><div class="lbl">días</div></div>
+      <div class="meta-item"><div class="num">10</div><div class="lbl">ciudades</div></div>
+      <div class="meta-item"><div class="num">5</div><div class="lbl">países</div></div>
+      <div class="meta-item"><div class="num">1 may</div><div class="lbl">salida SDQ</div></div>
+      <div class="meta-item"><div class="num">20 may</div><div class="lbl">regreso SDQ</div></div>
+    </div>
+  </div>
+
+  <!-- TABLA DE HOTELES -->
+  <div class="hotels-section">
+    <div class="section-title">🏨 Resumen de alojamientos</div>
+    <table class="hotels-table">
+      <tr><th>Día</th><th>Fecha</th><th>Ciudad</th><th>Hotel</th></tr>
+      <tr><td>2</td><td>Sab 2 mayo</td><td>Berlin</td><td>AMANO Grand Central</td></tr>
+      <tr><td>3</td><td>Dom 3 mayo</td><td>Colonia</td><td>Garner Hotel Colonia Engelbertz by IKG</td></tr>
+      <tr><td>4–5</td><td>Lun–Mar 4–5 mayo</td><td>Selva Negra</td><td>Ferienhaus Albmatte – St. Blasien</td></tr>
+      <tr><td>6–7</td><td>Mie–Jue 6–7 mayo</td><td>Munich</td><td>Weichandhof</td></tr>
+      <tr><td>8–9</td><td>Vie–Sab 8–9 mayo</td><td>Hallstatt</td><td>Apartments Marie B</td></tr>
+      <tr><td>10–12</td><td>Dom–Mar 10–12 mayo</td><td>Viena</td><td>Hotel Calmo</td></tr>
+      <tr><td>13–14</td><td>Mie–Jue 13–14 mayo</td><td>Salzburgo</td><td>Hotel Turnerwirt</td></tr>
+      <tr><td>15</td><td>Vie 15 mayo</td><td>Nuremberg</td><td>B&amp;B Hotel Nurnberg-City</td></tr>
+      <tr><td>16</td><td>Sab 16 mayo</td><td>Leipzig</td><td>B&amp;B Hotel Leipzig-Nord</td></tr>
+      <tr><td>17–19</td><td>Dom–Mar 17–19 mayo</td><td>Berlin</td><td>B&amp;B Hotel Berlin-Charlottenburg</td></tr>
+    </table>
+  </div>
+
+  <!-- DÍAS -->
+  <div id="dias"></div>
+
+</div><!-- /page -->
+
+<script>
+const DIAS = [
+  { dia:1, fecha:"Vie 1 mayo", pais:"DO", ciudad:"Santo Domingo", hotel:null, transp:null, acts:[
+    { t:"Todo el dia", titulo:"Dia de preparacion", desc:"Empacar, confirmar reservas, descargar mapas offline de Google Maps para Alemania y Austria. Comprar vignette Austria en asfinag.at", tag:"preparacion" },
+    { t:"6:00 pm",     titulo:"Salir al aeropuerto", desc:"Llegar 3 h antes. Check-in Iberia, facturar equipaje directo a Berlin BER", tag:"traslado" },
+    { t:"8:55 pm",     titulo:"Vuelo SDQ a Madrid",  desc:"Iberia · ~8 h de vuelo nocturno · intentar dormir en el avion", tag:"traslado" }
+  ]},
+  { dia:2, fecha:"Sab 2 mayo", pais:"DE", ciudad:"Berlin", hotel:"AMANO Grand Central",
+    transp:"Vuelo SDQ → Madrid → Berlin (Iberia) · Escala 5 h en Madrid T4 · Llegan BER ~7:00 pm · S-Bahn S9 al Hauptbahnhof ~30 min · 4 EUR/persona", acts:[
+    { t:"11:00 am", titulo:"Llegan Madrid T4",             desc:"Escala de 5 h · desayunar, descansar, ducharse si es posible en la sala VIP Velazquez de Iberia (~40 EUR/persona)", tag:"traslado" },
+    { t:"3:55 pm",  titulo:"Vuelo Madrid a Berlin",        desc:"Iberia · ~3 h de vuelo", tag:"traslado" },
+    { t:"7:00 pm",  titulo:"Llegan BER Berlin",            desc:"Migracion + equipaje ~45 min · S-Bahn S9 al Hauptbahnhof ~30 min · 4 EUR/persona", tag:"traslado" },
+    { t:"9:00 pm",  titulo:"Check-in AMANO Grand Central", desc:"Dejar equipaje · pedir habitacion alejada del rooftop bar", tag:"alojamiento" },
+    { t:"9:30 pm",  titulo:"Cena Augustiner am Gendarmenmarkt", desc:"Augustiner am Gendarmenmarkt (10 min) o restaurante del propio hotel · nada de turismo esta noche", tag:"gastronomia" }
+  ]},
+  { dia:3, fecha:"Dom 3 mayo", pais:"DE", ciudad:"Berlin a Colonia", hotel:"Garner Hotel Colonia Engelbertz by IKG",
+    transp:"Carro SIXT Hauptbahnhof · A2/A1 · 575 km · ~5 h 30 min · Parada recomendada ~Dortmund", acts:[
+    { t:"7:30 am", titulo:"Desayuno Berlin Hauptbahnhof",        desc:"En el hotel o cafeteria cercana · energizar para el viaje largo", tag:"gastronomia" },
+    { t:"8:00 am", titulo:"Recoger carro SIXT Hauptbahnhof",     desc:"Abre 8 am domingo · llevar PIC + licencia + pasaporte + tarjeta de credito · fotografiar el carro entero antes de salir", tag:"traslado" },
+    { t:"8:30 am", titulo:"Salida hacia Colonia A2 A1",          desc:"A2 a A1 · 575 km · parada de descanso recomendada a mitad del camino (~Dortmund)", tag:"traslado" },
+    { t:"2:00 pm", titulo:"Llegada Garner Hotel Engelbertz",     desc:"Check-in Garner Hotel Colonia Engelbertz by IKG · dejar equipaje", tag:"llegada" },
+    { t:"3:30 pm", titulo:"Catedral de Colonia Dom",             desc:"Patrimonio UNESCO · la mas visitada de Alemania · gratis entrar · subir la torre (533 escalones, 6 EUR) · arquitectura gotica del siglo XIII", tag:"cultura" },
+    { t:"5:30 pm", titulo:"Paseo Altstadt Colonia",              desc:"Casco historico medieval · callejuelas adoquinadas · murales romanos · ambiente tranquilo un domingo", tag:"paseo" },
+    { t:"7:30 pm", titulo:"Brauhaus Sion Colonia Kolsch",        desc:"Brauhaus Sion o Peters Brauhaus · la cerveza Kolsch solo se sirve en Colonia · Rheinischer Sauerbraten como plato principal", tag:"gastronomia" },
+    { t:"9:30 pm", titulo:"Catedral de Colonia iluminada",       desc:"Paseo nocturno frente a la catedral iluminada", tag:"paseo" }
+  ]},
+  { dia:4, fecha:"Lun 4 mayo", pais:"DE", ciudad:"Colonia a Selva Negra", hotel:"Ferienhaus Albmatte – St. Blasien",
+    transp:"Carro · A3/A5 · 493 km · ~5 h", acts:[
+    { t:"8:00 am", titulo:"Desayuno Cafe Reichard Colonia",   desc:"Ultimo cafe antes de salir · Cafe Reichard junto a la catedral si esta abierto", tag:"gastronomia" },
+    { t:"9:00 am", titulo:"Salida hacia Selva Negra A3 A5",   desc:"A3 a A5 · 493 km", tag:"traslado" },
+    { t:"3:00 pm", titulo:"Ferienhaus Albmatte St. Blasien",  desc:"Check-in Ferienhaus Albmatte · casa rural con jardin, grill y zona de picnic", tag:"llegada" },
+    { t:"4:00 pm", titulo:"Picnic Schwarzwalder Schinken",    desc:"Schwarzwalder Schinken (jamon de la Selva Negra) · pan · queso · fruta", tag:"gastronomia" },
+    { t:"4:30 pm", titulo:"Sendero St. Blasien bosque Alb",   desc:"Sendero desde St. Blasien al Alb · naturaleza pura · aire de montana", tag:"naturaleza" },
+    { t:"7:00 pm", titulo:"Catedral de St. Blasien cupula",   desc:"Una de las cupulas barrocas mas grandes de Europa · casi desconocida por turistas · arquitectura sorprendente en medio del bosque", tag:"cultura" },
+    { t:"7:30 pm", titulo:"Cena Schwarzwalder Kirschtorte",   desc:"Restaurante local en St. Blasien · pedir la torta Selva Negra autentica como postre", tag:"gastronomia" }
+  ]},
+  { dia:5, fecha:"Mar 5 mayo", pais:"DE", ciudad:"Selva Negra", hotel:"Ferienhaus Albmatte – St. Blasien", transp:null, acts:[
+    { t:"8:00 am",  titulo:"Desayuno Ferienhaus Albmatte",         desc:"Aprovechar el jardin y el ambiente del Ferienhaus · el desayuno mas tranquilo del viaje", tag:"gastronomia" },
+    { t:"9:30 am",  titulo:"Schwarzwaldhochstrasse Ruta B500",     desc:"Conducir la Schwarzwaldhochstrasse · miradores espectaculares · bosques de pinos centenarios", tag:"traslado" },
+    { t:"11:00 am", titulo:"Cascada de Triberg Selva Negra",       desc:"La mas alta de Alemania · 163 metros de caida · sendero de 30 min · 5 EUR entrada · espectacular en mayo con el deshielo", tag:"naturaleza" },
+    { t:"1:00 pm",  titulo:"Triberg relojes de cuco artesanos",    desc:"Capital mundial del reloj de cuco · talleres artesanos con demostracion en vivo · comprar directamente al artesano", tag:"cultura" },
+    { t:"2:30 pm",  titulo:"Almuerzo Flammkuchen Triberg",         desc:"Flammkuchen (variante flambada alsaciana) en restaurante local · el plato tipico de la region", tag:"gastronomia" },
+    { t:"4:00 pm",  titulo:"Lago Titisee Selva Negra",             desc:"Lago glaciar a 30 min de Triberg · paseos en bote (~12 EUR/hora) o caminar por la orilla · los Alpes reflejados en el agua", tag:"naturaleza" },
+    { t:"6:00 pm",  titulo:"Regreso a St. Blasien atardecer",      desc:"~45 min · el atardecer sobre el bosque desde el carro es espectacular", tag:"traslado" },
+    { t:"8:00 pm",  titulo:"Cena Spatburgunder vino Baden",        desc:"Spatburgunder (Pinot Noir aleman) · relajar en el jardin del Ferienhaus", tag:"gastronomia" }
+  ]},
+  { dia:6, fecha:"Mie 6 mayo", pais:"DE", ciudad:"Selva Negra a Munich", hotel:"Weichandhof – Munich",
+    transp:"Carro · A96 bordeando el Lago de Constanza (Bodensee) · 300 km · ~4 h · +45 min por ruta del lago (muy recomendable)", acts:[
+    { t:"8:30 am", titulo:"Desayuno Ferienhaus salida",            desc:"Despedida del Ferienhaus · ultima vista del bosque desde la terraza", tag:"gastronomia" },
+    { t:"9:30 am", titulo:"Lago Bodensee Lago de Constanza A96",   desc:"A96 · rodeando el Bodensee · +45 min pero con los Alpes al fondo · muy recomendable", tag:"traslado" },
+    { t:"2:00 pm", titulo:"Weichandhof Munich llegada",            desc:"Check-in Weichandhof · confirmar parking · dejar el carro - no volver a usarlo en la ciudad", tag:"llegada" },
+    { t:"3:00 pm", titulo:"Marienplatz Neues Rathaus Munich",      desc:"Centro de Munich · Neues Rathaus con su Glockenspiel · el carillon toca a las 3 pm · arquitectura neogotica impresionante", tag:"cultura" },
+    { t:"4:00 pm", titulo:"Viktualienmarkt Munich mercado",        desc:"Mercado al aire libre desde 1807 · productos locales bavaro · miel, quesos, embutidos, flores · ambiente autentico", tag:"gastronomia" },
+    { t:"5:30 pm", titulo:"Hofbrauhaus Munich cerveceria",         desc:"La cerveceria mas famosa del mundo fundada en 1589 · musica bavara en directo · Weissbier y Obatzda · turistico pero imprescindible", tag:"cultura" },
+    { t:"8:00 pm", titulo:"Augustiner-Keller Munich Schweinshaxe", desc:"El mejor codillo de cerdo de Munich · cerveceria original desde 1328 · pedir Obatzda de entrada y Apfelstrudel de postre", tag:"gastronomia" }
+  ]},
+  { dia:7, fecha:"Jue 7 mayo", pais:"DE", ciudad:"Munich", hotel:"Weichandhof – Munich", transp:null, acts:[
+    { t:"8:00 am", titulo:"Viktualienmarkt desayuno Weisswurst",    desc:"Weisswurst (salchicha blanca) con Brezel y mostaza dulce · solo se sirve hasta mediodia · en Cafe Frischhut o en el Viktualienmarkt", tag:"gastronomia" },
+    { t:"9:30 am", titulo:"Deutsches Museum Munich ciencia",        desc:"El museo de ciencia y tecnologia mas grande del mundo · seccion de musica con instrumentos historicos del siglo XVI · reservar 3-4 h minimo", tag:"cultura" },
+    { t:"1:00 pm", titulo:"Biergarten Chinesischer Turm Munich",    desc:"Biergarten del Chinesischer Turm · el Biergarten mas grande del mundo al aire libre · Brotzeit (tabla bavara) con cerveza · los surfistas en el Eisbach estan a 15 min", tag:"gastronomia" },
+    { t:"3:00 pm", titulo:"Palacio Nymphenburg Munich jardines",    desc:"Residencia de verano de los reyes de Baviera · jardines espectaculares en mayo · 8 EUR/persona", tag:"cultura" },
+    { t:"5:30 pm", titulo:"BMW Welt Munich arquitectura gratis",    desc:"Arquitectura futurista impresionante · exposicion permanente de diseno e ingenieria · la historia del motor como arte · gratis", tag:"cultura" },
+    { t:"7:30 pm", titulo:"Cena barrio Schwabing Munich",           desc:"El barrio bohemio de Munich · restaurantes internacionales de calidad · menos turistico que el centro", tag:"gastronomia" }
+  ]},
+  { dia:8, fecha:"Vie 8 mayo", pais:"AT", ciudad:"Munich a Hallstatt", hotel:"Apartments Marie B – Hallstatt",
+    transp:"Carro · 90 km · ~2 h 30 min cruzando los Alpes", acts:[
+    { t:"8:00 am",  titulo:"Desayuno Munich salida temprana",        desc:"Salir temprano para aprovechar la tarde completa en Hallstatt", tag:"gastronomia" },
+    { t:"11:00 am", titulo:"Apartments Marie B Hallstatt check-in",  desc:"Check-in en los apartamentos · vistas directas al lago", tag:"llegada" },
+    { t:"12:30 pm", titulo:"Restaurant Simony Hallstatt trucha",     desc:"Restaurant Simony o Braugasthof · trucha recien pescada del lago frente al restaurante · la experiencia gastronomica mas autentica del viaje", tag:"gastronomia" },
+    { t:"1:30 pm",  titulo:"Lago Hallstatt barca de remo",           desc:"Alquilar barca (~15 EUR/hora) · silencio absoluto · los Alpes reflejados en el agua", tag:"naturaleza" },
+    { t:"3:00 pm",  titulo:"Skywalk Hallstatt mirador panoramico",   desc:"Plataforma mirador sobre el pueblo y el lago · 20 min a pie cuesta arriba · vistas de 360 grados", tag:"paseo" },
+    { t:"7:00 pm",  titulo:"Gasthof Zauner Hallstatt cena",          desc:"Despues de las 7 pm los buses turisticos se van · cenar en Gasthof Zauner · Kaiserschmarrn imprescindible", tag:"gastronomia" },
+    { t:"9:00 pm",  titulo:"Hallstatt pueblo de noche",              desc:"Paseo nocturno por las callejuelas vacias · el pueblo iluminado reflejado en el agua", tag:"paseo" }
+  ]},
+  { dia:9, fecha:"Sab 9 mayo", pais:"AT", ciudad:"Hallstatt", hotel:"Apartments Marie B – Hallstatt", transp:null, acts:[
+    { t:"7:00 am",  titulo:"Amanecer lago Hallstatt muelle",         desc:"El momento mas magico de todo el viaje · niebla matutina sobre el agua · llevarse el cafe del apartamento y sentarse en el muelle", tag:"naturaleza" },
+    { t:"8:30 am",  titulo:"Desayuno Apartments Marie B",            desc:"Comprar en el Spar la noche anterior · desayuno tranquilo con vistas al lago", tag:"gastronomia" },
+    { t:"10:00 am", titulo:"Museo Hallstatt Edad de Hierro",         desc:"La civilizacion celta de la Edad de Hierro da el nombre a toda una era historica · artefactos de 3000 anos · 10 EUR/persona", tag:"cultura" },
+    { t:"11:30 am", titulo:"Beinhaus Hallstatt Capilla Huesos",      desc:"El cementerio mas peculiar de Europa · craneos decorados exhibidos en una capilla · tradicion funeraria medieval · gratuito", tag:"cultura" },
+    { t:"1:00 pm",  titulo:"Gasthof Simony Hallstatt Tafelspitz",    desc:"Ternera hervida con rabano picante y patatas · el plato favorito del Emperador Franz Joseph · con vistas directas al lago", tag:"gastronomia" },
+    { t:"3:00 pm",  titulo:"Cueva de Hielo Dachstein Austria",       desc:"A 20 min en carro · estalactitas de hielo · temperatura -1C dentro · llevar abrigo · teleferico espectacular · 25 EUR/persona", tag:"naturaleza" },
+    { t:"6:00 pm",  titulo:"Embarcadero Hallstatt atardecer",        desc:"Luz dorada sobre los Alpes · el contraste entre el agua oscura y las cumbres iluminadas · la foto mas bonita del viaje", tag:"paseo" },
+    { t:"8:00 pm",  titulo:"Braugasthof Hallstatt cena Schnitzel",   desc:"Vino Gruner Veltliner (el blanco austriaco por excelencia) · Wiener Schnitzel original en Braugasthof", tag:"gastronomia" }
+  ]},
+  { dia:10, fecha:"Dom 10 mayo", pais:"AT", ciudad:"Hallstatt a Viena", hotel:"Hotel Calmo – Viena",
+    transp:"Carro · A1 Westautobahn · 280 km · ~3 h · Parada opcional Monasterio de Melk (+30 min)", acts:[
+    { t:"9:30 am",  titulo:"Salida Hallstatt hacia Viena A1",        desc:"A1 Westautobahn · 280 km · ruta preciosa por el valle del Danubio · parada opcional en Monasterio de Melk", tag:"traslado" },
+    { t:"12:30 pm", titulo:"Hotel Calmo Viena check-in",             desc:"Check-in · dejar el carro aparcado en el hotel para todo el fin de semana · no volver a usarlo en Viena", tag:"llegada" },
+    { t:"2:00 pm",  titulo:"Cafe Central Vienna melange",            desc:"Cafe Central o Cafe Landtmann · melange (cafe con leche vienes) · Apfelstrudel o Sachertorte · sentarse sin prisa · Patrimonio UNESCO", tag:"gastronomia" },
+    { t:"3:30 pm",  titulo:"Ringstrasse Vienna paseo imperial",      desc:"El gran bulevar imperial del siglo XIX · Opera, Parlamento, Rathaus, Burgtheater · 4 km a pie o en tranvia (linea 1 o 2)", tag:"paseo" },
+    { t:"5:00 pm",  titulo:"Hofburg Vienna palacio Habsburgo",       desc:"El palacio imperial de los Habsburgos · los patios exteriores y Michaelerplatz son de acceso libre · siete siglos de poder visible en la arquitectura", tag:"cultura" },
+    { t:"6:30 pm",  titulo:"Stadtpark Vienna estatua Johann Strauss", desc:"El parque mas romantico de Viena · la estatua dorada de Johann Strauss II · rodeada de jardines en flor en mayo", tag:"paseo" },
+    { t:"8:00 pm",  titulo:"Wiener Staatsoper Opera Estatal Vienna",  desc:"Si hay funcion: entradas de pie desde 4 EUR (venta presencial el mismo dia a las 10 am)", tag:"musica" },
+    { t:"9:00 pm",  titulo:"Figlmuller Vienna Wiener Schnitzel",      desc:"Gasthaus Poschl o Figlmuller · el Schnitzel original vienes es de ternera · del tamano de un plato · con Erdapfelsalat", tag:"gastronomia" }
+  ]},
+  { dia:11, fecha:"Lun 11 mayo", pais:"AT", ciudad:"Viena", hotel:"Hotel Calmo – Viena", transp:null, acts:[
+    { t:"8:00 am",  titulo:"WurstelStand Vienna desayuno local",      desc:"WurstelStand al aire libre · Krakauerkasekrainer (salchicha con queso) con mostaza · experiencia gastronomica sorprendente y muy local", tag:"gastronomia" },
+    { t:"9:30 am",  titulo:"Palacio Schonbrunn Vienna jardines",      desc:"Residencia imperial de los Habsburgo · 1441 habitaciones · tour Grand con jardines incluidos (~26 EUR/persona) · los jardines en mayo son extraordinarios · reservar online", tag:"cultura" },
+    { t:"12:00 pm", titulo:"Naschmarkt Vienna mercado internacional", desc:"300 metros de puestos con cocina de medio mundo · cocina turca, griega, asiatica y austriaca conviviendo · almuerzo variado y autentico · gratuito entrar", tag:"gastronomia" },
+    { t:"2:00 pm",  titulo:"Prater Riesenrad Vienna parque",          desc:"5 km de avenida de castanos centenarios · la Noria Riesenrad (1897) tiene entrada (~15 EUR) pero el parque es gratuito · mayo con los castanos en flor", tag:"paseo" },
+    { t:"4:00 pm",  titulo:"Belvedere Superior El Beso Klimt",        desc:"La obra mas famosa de Austria en su ubicacion original · jardines barrocos espectaculares · 16 EUR/persona · reservar online", tag:"cultura" },
+    { t:"5:30 pm",  titulo:"Haus der Musik Vienna interactivo",       desc:"El museo de musica mas innovador de Europa · historia de la Filarmonica de Viena · simular ser director de orquesta · 15 EUR/persona", tag:"musica" },
+    { t:"8:00 pm",  titulo:"Heuriger Grinzing Vienna vino nuevo",     desc:"Zona vinicola de Viena · Gruner Veltliner fresco con Liptauer (queso especiado) · Grinzing o Gumpoldskirchen", tag:"gastronomia" }
+  ]},
+  { dia:12, fecha:"Mar 12 mayo", pais:"AT", ciudad:"Viena", hotel:"Hotel Calmo – Viena", transp:null, acts:[
+    { t:"9:00 am",  titulo:"Kunsthistorisches Museum Vienna",         desc:"Uno de los 10 mejores museos de arte del mundo · Vermeer, Bruegel el Viejo, Velazquez, Caravaggio, Rubens · 21 EUR/persona · reservar 3 h minimo", tag:"cultura" },
+    { t:"12:30 pm", titulo:"Cafe Museum Vienna almuerzo Loos",        desc:"Disenado por Adolf Loos en 1899 · arquitectura Secesion Vienesa · el almuerzo del dia (Mittagsmenu) es economico y excelente", tag:"gastronomia" },
+    { t:"2:00 pm",  titulo:"Secesion Vienesa Friso Beethoven Klimt", desc:"Edificio revolucionario de 1898 · el friso de Klimt inspirado en la 9a Sinfonia de Beethoven ocupa toda una sala · 9 EUR/persona", tag:"musica" },
+    { t:"4:00 pm",  titulo:"Josefstadt Volksgarten Rathaus Vienna",  desc:"Barrio residencial vienes autentico · el Rathaus neogotico · jardines del Volksgarten con rosas en flor en mayo", tag:"paseo" },
+    { t:"5:00 pm",  titulo:"Kaisergruft Cripta Imperial Vienna",      desc:"148 miembros de la dinastia Habsburgo · historia del Imperio Austro-Hungaro en un sotano · abierto hasta las 6 pm · 8 EUR/persona", tag:"cultura" },
+    { t:"7:00 pm",  titulo:"Steirereck Stadtpark Vienna cena gourmet",desc:"Steirereck en Stadtpark · la mejor direccion gastronomica de Austria · o Zum Wohl para una experiencia austriaca con tabla de quesos", tag:"gastronomia" }
+  ]},
+  { dia:13, fecha:"Mie 13 mayo", pais:"AT", ciudad:"Viena a Salzburgo", hotel:"Hotel Turnerwirt – Salzburgo",
+    transp:"Carro · A1 Westautobahn · 300 km · ~3 h · Los Alpes bavaro acompanan la primera hora", acts:[
+    { t:"8:30 am",  titulo:"Desayuno Hotel Calmo Vienna salida",      desc:"Ultimo cafe vienes en el hotel · recoger el carro · salida hacia Salzburgo", tag:"gastronomia" },
+    { t:"9:30 am",  titulo:"Viena a Salzburgo A1 Westautobahn",       desc:"300 km · 3 h · cruzar de Austria hacia los Alpes", tag:"traslado" },
+    { t:"12:30 pm", titulo:"Hotel Turnerwirt Salzburg check-in",      desc:"Check-in · hotel familiar historico en el corazon de Salzburgo · ciudad pequena caminable desde aqui", tag:"llegada" },
+    { t:"1:30 pm",  titulo:"Cafe Tomaselli Salzburg Nockerl",         desc:"Cafe Tomaselli · el cafe mas antiguo de Austria (1705) · pedir primero Tafelspitz o Forelle (trucha) y luego el Nockerl (postre souffle en forma de montana)", tag:"gastronomia" },
+    { t:"3:00 pm",  titulo:"Mozarts Geburtshaus Salzburg nacimiento", desc:"El apartamento donde nacio Wolfgang Amadeus Mozart en 1756 · instrumentos originales, partituras y cartas · 13 EUR/persona", tag:"musica" },
+    { t:"5:00 pm",  titulo:"Getreidegasse Salzburg calle historica",  desc:"Calle medieval con letreros artesanos de hierro forjado · arquitectura barroca impecable · tiendas de artesania local", tag:"paseo" },
+    { t:"6:30 pm",  titulo:"Festung Hohensalzburg fortaleza medieval",desc:"La fortaleza medieval mejor conservada de Europa Central · vista panoramica de Salzburgo y los Alpes · subir en funicular (~13 EUR)", tag:"cultura" },
+    { t:"8:30 pm",  titulo:"Augustinerbräu Salzburg cerveceria 1621", desc:"La cerveceria monastica mas autentica de Salzburgo · fundada en 1621 · cerveza servida en jarras de piedra · Brotzeit bavaros", tag:"gastronomia" }
+  ]},
+  { dia:14, fecha:"Jue 14 mayo", pais:"AT", ciudad:"Salzburgo", hotel:"Hotel Turnerwirt – Salzburgo", transp:null, acts:[
+    { t:"8:30 am",  titulo:"Universitatsplatz Salzburg mercado",      desc:"La plaza universitaria barroca frente a la catedral · desde 1605 · frutas exoticas, frutos secos y productos alpinos · desayunar entre los salzburgueses", tag:"gastronomia" },
+    { t:"9:30 am",  titulo:"Mozarts Wohnhaus Salzburg residencia",    desc:"Donde Mozart vivio de 18 a 20 anos · audioguia interactiva excelente · diferente a la Casa natal · 13 EUR/persona o 19 EUR combinado", tag:"musica" },
+    { t:"11:00 am", titulo:"Salzburger Dom catedral Mozart",          desc:"Barroco austriaco · Mozart fue bautizado aqui y trabajo como organista · el organo principal tiene 6000 tubos · gratuito", tag:"cultura" },
+    { t:"1:00 pm",  titulo:"Mirabell Garten Salzburg jardines",       desc:"Los jardines barrocos mas bonitos de Austria · aparecen en Sonrisas y Lagrimas · las flores en pleno esplendor · la fuente Pegaso y las vistas a la fortaleza", tag:"paseo" },
+    { t:"3:00 pm",  titulo:"Paul Furst Mozartkugel Salzburg original",desc:"Las Mozartkugeln (bombones de mazapan y chocolate) originales de Paul Furst · solo en Salzburgo", tag:"gastronomia" },
+    { t:"4:00 pm",  titulo:"Wolfgangsee lago Salzkammergut Austria",  desc:"A 30 min en carro · los lagos alpinos que inspiraron a Brahms · Wolfgangsee o Mondsee · paisajes de postal con los Alpes reflejados", tag:"naturaleza" },
+    { t:"7:00 pm",  titulo:"Stiftskeller St. Peter Salzburg 803 dC",  desc:"Restaurante en operacion desde el 803 d.C. · el mas antiguo de Europa Central · cenas con conciertos de Mozart y Salieri · 65 EUR/persona · reservar en stpeter.at", tag:"musica" }
+  ]},
+  { dia:15, fecha:"Vie 15 mayo", pais:"DE", ciudad:"Salzburgo a Nuremberg", hotel:"B&B Hotel Nurnberg-City",
+    transp:"Carro · A8/A9 · 315 km · ~3 h 15 min · Cruzar de Austria a Alemania", acts:[
+    { t:"8:30 am",  titulo:"Desayuno Salzburg salida hacia Alemania", desc:"Ultima vista de los Alpes austriacos desde la ciudad · recoger el carro · salida hacia Alemania", tag:"gastronomia" },
+    { t:"9:30 am",  titulo:"Salzburgo a Nuremberg A8 A9",            desc:"315 km · ~3 h 15 min · cruzar de Austria a Alemania", tag:"traslado" },
+    { t:"1:30 pm",  titulo:"B&B Hotel Nurnberg City check-in",        desc:"Check-in · solo 1 noche - ser muy eficientes con el tiempo disponible", tag:"llegada" },
+    { t:"2:00 pm",  titulo:"Kaiserburg Nuremberg castillo imperial",  desc:"La fortaleza del Sacro Imperio Romano Germanico · residencia de los emperadores medievales · vistas sobre la ciudad · 7 EUR/persona", tag:"cultura" },
+    { t:"4:00 pm",  titulo:"Hauptmarkt Nuremberg ciudad medieval",    desc:"La mejor conservada ciudad medieval de Alemania · murallas del siglo XIV intactas · iglesia de St. Sebald · fuente Schoner Brunnen (1396)", tag:"paseo" },
+    { t:"6:00 pm",  titulo:"Dokumentationszentrum Nuremberg nazismo", desc:"Centro de documentacion mas honesto de Alemania sobre el nazismo · dentro del inacabado palacio de los congresos de Hitler · 7 EUR/persona · abierto hasta 8 pm", tag:"cultura" },
+    { t:"8:30 pm",  titulo:"Bratwursthausle Nuremberg salchichas",    desc:"Las salchichas mas famosas de Alemania · pequenas, asadas en carbon · se sirven de 6 en 6 con chucrut y Semmel", tag:"gastronomia" }
+  ]},
+  { dia:16, fecha:"Sab 16 mayo", pais:"DE", ciudad:"Nuremberg a Leipzig", hotel:"B&B Hotel Leipzig-Nord",
+    transp:"Carro · A9 · 274 km · ~2 h 53 min · El paisaje cambia al entrar en la antigua Alemania Oriental", acts:[
+    { t:"8:00 am",  titulo:"Hauptmarkt Nuremberg manana tranquila",   desc:"Aprovechar para ver Nuremberg con calma matutina · el Hauptmarkt vacio de la manana es completamente diferente", tag:"gastronomia" },
+    { t:"9:00 am",  titulo:"Nuremberg a Leipzig A9 autopista",        desc:"274 km · 2 h 53 min · autopista directa · cruzar Baviera hacia Sajonia", tag:"traslado" },
+    { t:"9:30 am",  titulo:"Plagwitzer Markthalle Leipzig sabado",    desc:"Solo abre los SABADOS de 9 am a 2 pm · hoy es sabado, perfecto · mercado organico local en nave industrial · cafe de especialidad", tag:"gastronomia" },
+    { t:"1:00 pm",  titulo:"B&B Hotel Leipzig Nord check-in",         desc:"Check-in · solo 1 noche · ir directo a lo esencial", tag:"llegada" },
+    { t:"2:00 pm",  titulo:"Auerbachs Keller Leipzig Marktplatz",     desc:"Plaza central con el Rathaus mas grande del mundo (1556) · Auerbachs Keller · el restaurante de la obra Fausto de Goethe (1525)", tag:"gastronomia" },
+    { t:"3:30 pm",  titulo:"Thomaskirche Leipzig Bach tumba",          desc:"Bach fue director musical aqui durante 27 anos · su tumba esta bajo el altar · el coro de Bach (Thomanerchor) sigue cantando desde 1212", tag:"musica" },
+    { t:"4:00 pm",  titulo:"Bach Museum Leipzig instrumentos",        desc:"El museo mas completo sobre Johann Sebastian Bach · instrumentos originales, partituras manuscritas · 10 EUR/persona", tag:"musica" },
+    { t:"5:30 pm",  titulo:"Nikolaikirche Leipzig revolucion 1989",   desc:"La iglesia donde comenzo la revolucion pacifica de 1989 que llevo a la caida del Muro · y el Volkerschlachtdenkmal (monumento de 1813)", tag:"cultura" },
+    { t:"7:30 pm",  titulo:"Karl-Liebknecht-Strasse Leipzig Gose",    desc:"El barrio alternativo de Leipzig mas vibrante · restaurantes independientes · probar la Gose (cerveza acida tipica de Leipzig)", tag:"gastronomia" }
+  ]},
+  { dia:17, fecha:"Dom 17 mayo", pais:"DE", ciudad:"Leipzig a Berlin", hotel:"B&B Hotel Berlin-Charlottenburg",
+    transp:"Carro · A9/A10 · 200 km · ~2 h 26 min · El tramo mas corto del viaje · Devolver carro en SIXT Hauptbahnhof", acts:[
+    { t:"9:00 am",  titulo:"Marktplatz Leipzig manana domingo",       desc:"Paseo matutino por el Marktplatz vacio · el silencio de la manana en Leipzig es especial", tag:"gastronomia" },
+    { t:"10:00 am", titulo:"Leipzig a Berlin A9 A10 Berliner Ring",   desc:"200 km · 2 h 26 min · llegada tranquila a la capital", tag:"traslado" },
+    { t:"12:00 pm", titulo:"B&B Hotel Berlin Charlottenburg check-in",desc:"Check-in · devolver el carro en SIXT Hauptbahnhof (10 min en metro) · fotografiar todo antes de entregar · pedir recibo de devolucion en mano", tag:"llegada" },
+    { t:"2:00 pm",  titulo:"Schloss Charlottenburg Berlin palacio",   desc:"El palacio barroco mas grande de Berlin · residencia de los reyes de Prusia · jardines al estilo Versailles · a 10 min a pie del hotel · 12 EUR/persona", tag:"cultura" },
+    { t:"4:30 pm",  titulo:"Kurfurstendamm Kudamm Berlin bulevar",   desc:"El gran bulevar de Berlin Occidental · compras de recuerdos y productos alemanes · Kaiser-Wilhelm-Gedachtniskirche (iglesia en ruinas como memorial de guerra)", tag:"paseo" },
+    { t:"8:00 pm",  titulo:"Cena Mitte Kreuzberg Berlin multicultural",desc:"Restaurante vietnamita en Mitte o Kreuzberg · Berlin tiene la mejor cocina multicultural de Europa", tag:"gastronomia" }
+  ]},
+  { dia:18, fecha:"Lun 18 mayo", pais:"DE", ciudad:"Berlin", hotel:"B&B Hotel Berlin-Charlottenburg", transp:null, acts:[
+    { t:"9:00 am",  titulo:"Pergamonmuseum Berlin Museumsinsel",      desc:"Patrimonio UNESCO · el Altar de Pergamo y la Puerta de Ishtar de Babilonia · 21 EUR/persona · reservar online", tag:"cultura" },
+    { t:"12:30 pm", titulo:"Curry 36 Currywurst Berlin Mehringdamm",  desc:"La salchicha mas berlinesa · Curry 36 en Mehringdamm es la mas legendaria · comer de pie como los locales", tag:"gastronomia" },
+    { t:"1:30 pm",  titulo:"East Side Gallery muro Berlin pinturas",  desc:"1.3 km del muro original con murales de artistas de todo el mundo · el mas famoso: el beso Honecker-Brezhnev · historia viva y arte en estado puro", tag:"cultura" },
+    { t:"3:30 pm",  titulo:"Checkpoint Charlie Berlin Guerra Fria",   desc:"El paso fronterizo mas famoso de la Guerra Fria · el checkpoint exterior es gratuito · historia palpable en cada metro", tag:"cultura" },
+    { t:"4:30 pm",  titulo:"Prenzlauer Berg Berlin barrio bohemio",   desc:"El barrio mas bohemio de Berlin · cafes independientes · tiendas de vinilo y libros de segunda mano · arquitectura de la RDA", tag:"paseo" },
+    { t:"5:30 pm",  titulo:"Markthalle Neun Kreuzberg Berlin",        desc:"La nave industrial mas cool de Kreuzberg · pasta trufada, ostras, cervezas artesanales, comida turca · ambiente local", tag:"gastronomia" },
+    { t:"7:00 pm",  titulo:"Kottbusser Tor Kreuzberg cena Berlin",    desc:"El barrio mas multicultural de Europa · street food turco, sirio, vietnamita y aleman en el mismo bloque · Kottbusser Tor · 10 EUR incluida cerveza", tag:"gastronomia" }
+  ]},
+  { dia:19, fecha:"Mar 19 mayo", pais:"DE", ciudad:"Berlin", hotel:"B&B Hotel Berlin-Charlottenburg", transp:null, acts:[
+    { t:"9:00 am",  titulo:"Topographie des Terrors Berlin Gestapo",  desc:"Instalado sobre las ruinas de la Gestapo y las SS · el museo mas honesto de Alemania sobre el nazismo · completamente gratuito · imprescindible para entender el siglo XX", tag:"cultura" },
+    { t:"11:00 am", titulo:"Holocaust Mahnmal Brandenburger Tor",     desc:"El campo de estelas disenado por Peter Eisenman · a 5 min la Puerta de Brandeburgo · el corazon historico de la ciudad reunificada", tag:"paseo" },
+    { t:"1:00 pm",  titulo:"Tiergarten Berlin picnic parque",         desc:"Comprar en un supermercado y hacer picnic en el parque · los berlineses viven en sus parques en primavera · ambiente 100% local", tag:"gastronomia" },
+    { t:"3:00 pm",  titulo:"Berliner Philharmonie visita concierto",  desc:"La sala de conciertos mas revolucionaria del mundo (Hans Scharoun, 1963) · visita guiada 5 EUR · si hay concierto: entradas desde 25 EUR", tag:"musica" },
+    { t:"5:00 pm",  titulo:"Ampelmann Shop Berlin souvenirs RDA",     desc:"Ampelmann Shop (semaforito de la RDA) · chocolate Ritter Sport en su tienda oficial · recuerdos para SDQ", tag:"paseo" },
+    { t:"7:00 pm",  titulo:"Borchardt Berlin cena despedida viaje",   desc:"Borchardt (favorito de Angela Merkel) o Lutter & Wegner (1811) · Wiener Schnitzel o Sauerbraten · brindis por un viaje extraordinario", tag:"gastronomia" }
+  ]},
+  { dia:20, fecha:"Mie 20 mayo", pais:"DO", ciudad:"Berlin a Santo Domingo", hotel:null,
+    transp:"S-Bahn S9 desde Hauptbahnhof al aeropuerto BER · ~30 min · 4 EUR/persona · Vuelo Berlin → Madrid → SDQ via Iberia", acts:[
+    { t:"Manana",    titulo:"Ultimo desayuno hotel Berlin",           desc:"Desayuno tranquilo en el hotel · repasar el equipaje · asegurarse de no dejar nada", tag:"gastronomia" },
+    { t:"~11:00 am", titulo:"Berlin Hauptbahnhof S-Bahn S9 BER",     desc:"S-Bahn S9 desde Hauptbahnhof · ~30 min · 4 EUR/persona · llegar 3 h antes del vuelo", tag:"traslado" },
+    { t:"~12:00 pm", titulo:"Check-in BER Berlin Brandenburg Airport",desc:"Documentar todo · revisar que no queda combustible pendiente con SIXT (ya devuelto el dia 17)", tag:"traslado" },
+    { t:"Tarde",     titulo:"Vuelo BER MAD SDQ Iberia regreso",      desc:"Regreso con Iberia · equipaje facturado directo a SDQ · 18 noches y 10 ciudades en la memoria", tag:"traslado" }
+  ]}
+];
+
+const FLAG = { DO:'🇩🇴', DE:'🇩🇪', AT:'🇦🇹' };
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('dias').innerHTML = DIAS.map(d => {
+  const transpHtml = d.transp
+    ? `<div class="transp">🚗 ${esc(d.transp)}</div>` : '';
+  const hotelHtml = d.hotel
+    ? `<div class="hotel">🏨 <strong>${esc(d.hotel)}</strong></div>` : '';
+  const actsHtml = d.acts.map(a =>
+    `<div class="act">
+      <div class="act-time">${esc(a.t)}</div>
+      <div class="act-content">
+        <div class="act-title">${esc(a.titulo)}<span class="tag tag-${esc(a.tag)}">${esc(a.tag)}</span></div>
+        <div class="act-desc">${esc(a.desc)}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  return `<div class="day">
+    <div class="day-head">
+      <span class="day-num">Día ${d.dia} · ${FLAG[d.pais]||''} ${d.pais}</span>
+      <span class="day-city">${esc(d.ciudad)}</span>
+      <span class="day-fecha">${esc(d.fecha)}</span>
+    </div>
+    <div class="day-body">
+      ${transpHtml}${hotelHtml}
+      <div class="acts">${actsHtml}</div>
+    </div>
+  </div>`;
+}).join('');
+</script>
+</body>
+</html>
